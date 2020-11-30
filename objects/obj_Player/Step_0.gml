@@ -28,3 +28,6 @@ if (mouse_check_button(mb_right)) {
 else {
 	sprite_index = spr_PlayerIdle;
 }
+
+// player attacking
+
