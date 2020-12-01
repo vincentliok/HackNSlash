@@ -17,17 +17,41 @@ if (keyboard_check(ord("D"))) {
 	x += movespeed;
 }
 
+// player direction
+
 direction = point_direction(x, y, mouse_x, mouse_y);
 image_angle = direction - 90;
 
-// player blocking
 
-if (mouse_check_button(mb_right)) {
+// player actions
+
+if (mouse_check_button_pressed(mb_right)) {
+	state = "blocking";
+	attack_timer = room_speed * attack_duration;
+}
+
+if (mouse_check_button_released(mb_right)) {
+	state = "idle";
+	attack_timer = room_speed * attack_duration;
+}
+
+if (mouse_check_button_pressed(mb_left)) {
+	state = "attacking";
+}
+
+if (state == "blocking") {
 	sprite_index = spr_PlayerBlock;
 }
-else {
-	sprite_index = spr_PlayerIdle;
+
+if (state == "attacking") {
+	sprite_index = spr_PlayerAttack;
+	attack_timer--;
+	if (attack_timer <= 0) {
+		state = "idle";
+		attack_timer = room_speed * attack_duration;
+	}
 }
 
-// player attacking
-
+if (state == "idle") {
+	sprite_index = spr_PlayerIdle;
+}
